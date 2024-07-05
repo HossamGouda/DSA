@@ -154,12 +154,6 @@ class SingleLinkedList {
   }
 }
 
-module.exports = {
-  SingleLinkedList: SingleLinkedList,
-  LinkedListNode: LinkedListNode,
-  LinkedListIterator: LinkedListIterator,
-};
-
 // Usage
 let singlelist = new SingleLinkedList();
 singlelist.insertLast(1);
