@@ -1,3 +1,5 @@
+//14 – Hashing – Introduction – FNV-1a Implementation
+
 class Hash {
   public Hash32(str: string): number {
     const OffsetBasis: number = 2166136261;
