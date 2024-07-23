@@ -136,6 +136,45 @@ class HashTable<TKey extends {toString(): string}, TValue> {
     }
   }
 
+  public Remove(key: TKey): boolean {
+    let hash = this.GetHash(key);
+
+    if (this.entries[hash] !== null && this.entries[hash]?.Key !== key) {
+      hash = this.CollisionHandling(key, hash, false);
+    }
+
+    if (
+      hash === -1 ||
+      this.entries[hash] === null ||
+      this.entries[hash]?.Key !== key
+    ) {
+      return false; // Key not found
+    }
+
+    // Remove the entry
+    console.log(`[remove] Removing key: ${key.toString()}`);
+    this.entries[hash] = null;
+    this.entriesCount--;
+
+    // Rehashing to handle collisions
+    for (let i = 1; i < this.entries.length; i++) {
+      const nextIndex = (hash + i) % this.entries.length;
+      if (this.entries[nextIndex] === null) break; // Stop rehashing when we hit an empty slot
+
+      const rehashedKey = this.entries[nextIndex]?.Key;
+      const rehashedValue = this.entries[nextIndex]?.Value;
+
+      // Reinsert the entry
+      if (rehashedKey !== undefined && rehashedValue !== undefined) {
+        console.log(`[rehash] Re-inserting key: ${rehashedKey.toString()}`);
+        this.entries[nextIndex] = null; // Clear the current slot
+        this.AddToEntries(rehashedKey, rehashedValue); // Re-add the entry
+      }
+    }
+
+    return true; // Key successfully removed
+  }
+
   public Size(): number {
     return this.entriesCount;
   }
@@ -157,6 +196,7 @@ class HashTable<TKey extends {toString(): string}, TValue> {
 }
 
 // Main program
+// Main program
 const table = new HashTable<string, string>();
 table.Print();
 table.Set("Sinar", "sinar@gmail.com");
@@ -164,7 +204,9 @@ table.Set("Elvis", "elvis@gmail.com");
 table.Set("Tane", "tane@gmail.com");
 table.Print();
 console.log(`[get] ${table.Get("Sinar")}`);
-// console.log(`[get] ${table.Get("Tane")}`);
+console.log(`[remove] ${table.Remove("Elvis")}`);
+table.Print();
+console.log(`[get] ${table.Get("Elvis")}`); // Should return undefined
 table.Set("Gerti", "gerti@gmail.com");
 table.Set("Arist", "arist@gmail.com");
 table.Print();
