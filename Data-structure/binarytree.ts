@@ -46,24 +46,59 @@ class BinaryTree<T> {
     }
   }
 
-  // Helper function to print the tree structure
   printTree(): void {
-    this.printTreeHelper(this.root, 0);
-  }
-
-  private printTreeHelper(node: TreeNode<T> | null, level: number): void {
-    if (node === null) {
+    if (!this.root) {
+      console.log("Empty tree");
       return;
     }
 
-    // Print right subtree
-    this.printTreeHelper(node.right, level + 1);
+    const getHeight = (node: TreeNode<T> | null): number => {
+      if (!node) return 0;
+      const leftHeight = getHeight(node.left);
+      const rightHeight = getHeight(node.right);
+      return Math.max(leftHeight, rightHeight) + 1;
+    };
 
-    // Print current node
-    console.log("  ".repeat(level) + node.data);
+    const height = getHeight(this.root);
+    const width = Math.pow(2, height + 1);
 
-    // Print left subtree
-    this.printTreeHelper(node.left, level + 1);
+    const levels: string[][] = Array(height * 2 - 1)
+      .fill(null)
+      .map(() => Array(width).fill(" "));
+
+    const toString = (value: T): string => {
+      if (value === null || value === undefined) {
+        return "";
+      }
+      return String(value);
+    };
+
+    const renderNode = (
+      node: TreeNode<T> | null,
+      level: number,
+      left: number,
+      right: number
+    ) => {
+      if (!node) return;
+
+      const mid = Math.floor((left + right) / 2);
+      levels[level * 2][mid] = toString(node.data);
+
+      if (node.left) {
+        levels[level * 2 + 1][Math.floor((left + mid) / 2)] = "/";
+        renderNode(node.left, level + 1, left, mid - 1);
+      }
+      if (node.right) {
+        levels[level * 2 + 1][Math.floor((mid + 1 + right) / 2)] = "\\";
+        renderNode(node.right, level + 1, mid + 1, right);
+      }
+    };
+
+    renderNode(this.root, 0, 0, width - 1);
+
+    levels.forEach((level) => {
+      console.log(level.join(""));
+    });
   }
 }
 
@@ -73,22 +108,20 @@ const numberTree = new BinaryTree<number>();
 // Insert elements into the tree and print after each insertion
 const numbersToInsert = [1, 2, 3, 4, 5, 6, 7];
 
-numbersToInsert.forEach((element, index) => {
+numbersToInsert.forEach((element) => {
   numberTree.Insert(element);
   console.log(`\nTree after inserting ${element}:`);
   numberTree.printTree();
   console.log("-".repeat(20));
 });
+// Test with letters
+console.log("\nTest with letters:");
+const letterTree = new BinaryTree<string>();
+const lettersToInsert = ["A", "B", "C", "D", "E"];
 
-// Example with a string tree
-const stringTree = new BinaryTree<string>();
-const stringsToInsert = ["A", "B", "C", "D", "E"];
-
-stringsToInsert.forEach((element, index) => {
-  stringTree.Insert(element);
-  console.log(`\nString tree after inserting ${element}:`);
-  stringTree.printTree();
+lettersToInsert.forEach((element) => {
+  letterTree.Insert(element);
+  console.log(`\nTree after inserting ${element}:`);
+  letterTree.printTree();
   console.log("-".repeat(20));
 });
-
-//This logging will help to understand how the tree is constructed as elements are inserted.
