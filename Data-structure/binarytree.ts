@@ -1,30 +1,30 @@
-class TreeNode {
-  data: number;
-  left: TreeNode | null;
-  right: TreeNode | null;
+class TreeNode<T> {
+  data: T;
+  left: TreeNode<T> | null;
+  right: TreeNode<T> | null;
 
-  constructor(data: number) {
+  constructor(data: T) {
     this.data = data;
     this.left = null;
     this.right = null;
   }
 }
 
-class BinaryTree {
-  root: TreeNode | null;
+class BinaryTree<T> {
+  root: TreeNode<T> | null;
 
   constructor() {
     this.root = null;
   }
 
-  Insert(data: number): void {
+  Insert(data: T): void {
     const newNode = new TreeNode(data);
     if (this.root === null) {
       this.root = newNode;
       return;
     }
 
-    const q: TreeNode[] = [];
+    const q: TreeNode<T>[] = [];
     q.push(this.root);
 
     while (q.length > 0) {
@@ -51,7 +51,7 @@ class BinaryTree {
     this.printTreeHelper(this.root, 0);
   }
 
-  private printTreeHelper(node: TreeNode | null, level: number): void {
+  private printTreeHelper(node: TreeNode<T> | null, level: number): void {
     if (node === null) {
       return;
     }
@@ -67,16 +67,27 @@ class BinaryTree {
   }
 }
 
-// Create a new binary tree
-const tree = new BinaryTree();
+// Create a new binary tree of numbers
+const numberTree = new BinaryTree<number>();
 
 // Insert elements into the tree and print after each insertion
-const elementsToInsert = [1, 2, 3, 4, 5, 6, 7];
+const numbersToInsert = [1, 2, 3, 4, 5, 6, 7];
 
-elementsToInsert.forEach((element, index) => {
-  tree.Insert(element);
+numbersToInsert.forEach((element, index) => {
+  numberTree.Insert(element);
   console.log(`\nTree after inserting ${element}:`);
-  tree.printTree();
+  numberTree.printTree();
+  console.log("-".repeat(20));
+});
+
+// Example with a string tree
+const stringTree = new BinaryTree<string>();
+const stringsToInsert = ["A", "B", "C", "D", "E"];
+
+stringsToInsert.forEach((element, index) => {
+  stringTree.Insert(element);
+  console.log(`\nString tree after inserting ${element}:`);
+  stringTree.printTree();
   console.log("-".repeat(20));
 });
 
