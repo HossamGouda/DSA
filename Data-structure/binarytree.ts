@@ -100,12 +100,47 @@ class BinaryTree<T> {
       console.log(level.join(""));
     });
   }
+
+  // PreOrder Traversal
+  PreOrder(): void {
+    const traverse = (node: TreeNode<T> | null): void => {
+      if (node === null) return;
+      process.stdout.write(`${node.data} -> `); // Printing without newline
+      traverse(node.left);
+      traverse(node.right);
+    };
+    traverse(this.root);
+    console.log(""); // New line after traversal
+  }
+
+  // InOrder Traversal
+  InOrder(): void {
+    const traverse = (node: TreeNode<T> | null): void => {
+      if (node === null) return;
+      traverse(node.left);
+      process.stdout.write(`${node.data} -> `); // Printing without newline
+      traverse(node.right);
+    };
+    traverse(this.root);
+    console.log(""); // New line after traversal
+  }
+
+  // PostOrder Traversal
+  PostOrder(): void {
+    const traverse = (node: TreeNode<T> | null): void => {
+      if (node === null) return;
+      traverse(node.left);
+      traverse(node.right);
+      process.stdout.write(`${node.data} -> `); // Printing without newline
+    };
+    traverse(this.root);
+    console.log(""); // New line after traversal
+  }
 }
 
-// Create a new binary tree of numbers
+// Test with numbers
+console.log("Test with numbers:");
 const numberTree = new BinaryTree<number>();
-
-// Insert elements into the tree and print after each insertion
 const numbersToInsert = [1, 2, 3, 4, 5, 6, 7];
 
 numbersToInsert.forEach((element) => {
@@ -114,10 +149,11 @@ numbersToInsert.forEach((element) => {
   numberTree.printTree();
   console.log("-".repeat(20));
 });
+
 // Test with letters
 console.log("\nTest with letters:");
 const letterTree = new BinaryTree<string>();
-const lettersToInsert = ["A", "B", "C", "D", "E"];
+const lettersToInsert = ["A", "B", "C", "D", "E", "F", "G", "H", "I"];
 
 lettersToInsert.forEach((element) => {
   letterTree.Insert(element);
@@ -125,3 +161,24 @@ lettersToInsert.forEach((element) => {
   letterTree.printTree();
   console.log("-".repeat(20));
 });
+
+// Testing Traversals for Numbers
+console.log("Number Tree Traversals:");
+console.log("PreOrder Traversal:");
+numberTree.PreOrder();
+console.log("InOrder Traversal:");
+numberTree.InOrder();
+console.log("PostOrder Traversal:");
+numberTree.PostOrder();
+
+// Testing Traversals for Letters
+console.log("\nLetter Tree Traversals:");
+console.log("PreOrder Traversal:");
+//node->left->right
+letterTree.PreOrder();
+console.log("InOrder Traversal:");
+//left->node->right
+letterTree.InOrder();
+console.log("PostOrder Traversal:");
+letterTree.PostOrder();
+//left->right->node
