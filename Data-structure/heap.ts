@@ -94,54 +94,32 @@ class Heap<T> {
     }
   }
 }
+//usage example
 
-class PriorityQueue {
-  private heap: Heap<[number, number]>; // Using tuple as data type
+const heap = new Heap();
+heap.insert(10);
+heap.insert(20);
+heap.insert(30);
+heap.insert(40);
+heap.insert(50);
+heap.insert(60);
+heap.insert(70);
+heap.insert(80);
+heap.insert(90);
+heap.insert(100);
+heap.insert(110);
+heap.insert(120);
+heap.insert(130);
 
-  constructor() {
-    this.heap = new Heap<[number, number]>();
-  }
+heap.print();
 
-  enqueue(priority: number, value: number) {
-    this.heap.insert([priority, value]);
-  }
+heap.draw();
 
-  dequeue(): [number, number] | null {
-    return this.heap.pop();
-  }
+heap.pop();
 
-  print() {
-    this.heap.print();
-  }
+heap.print();
 
-  draw() {
-    this.heap.draw();
-  }
-
-  hasData(): boolean {
-    return this.heap.getSize() > 0;
-  }
-}
-
-// Usage
-const queue = new PriorityQueue();
-queue.enqueue(5, 24);
-queue.enqueue(5, 32);
-queue.enqueue(3, 16);
-queue.enqueue(3, 45);
-queue.enqueue(1, 20);
-queue.enqueue(1, 53);
-queue.enqueue(2, 14);
-queue.enqueue(2, 27);
-
-queue.print();
-queue.draw();
-
-while (queue.hasData()) {
-  const result = queue.dequeue();
-  console.log(result![0] + "[" + result![1] + "]");
-}
-
+heap.draw();
 //Parent = array[(i - 1 ) / 2]
 //Left = array[(2 * i) + 1]
 //Right = array[(2 * i ) + 2]
